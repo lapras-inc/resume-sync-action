@@ -1,0 +1,73 @@
+name: Test Resume Sync Action
+
+on:
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: 'AI Provider to use'
+        required: true
+        type: choice
+        options:
+          - OpenAI
+          - Anthropic
+          - Google AI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build Action
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build action
+        run: npm run build
+
+      - name: Upload built action
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-action
+          path: |
+            dist/
+            action.yml
+            sample_resume.md
+          retention-days: 1
+
+  test:
+    runs-on: ubuntu-latest
+    name: Test with ${{ github.event.inputs.provider }}
+    needs: build
+    steps:
+      - name: Download built action
+        uses: actions/download-artifact@v4
+        with:
+          name: built-action
+          path: .
+
+      - name: Test with ${{ github.event.inputs.provider }}
+        uses: ./
+        with:
+          resume_path: ./sample_resume.md
+          lapras_api_key: ${{ secrets.LAPRAS_API_KEY }}
+          openai_api_key: ${{ github.event.inputs.provider == 'OpenAI' && secrets.OPENAI_API_KEY || '' }}
+          anthropic_api_key: ${{ github.event.inputs.provider == 'Anthropic' && secrets.ANTHROPIC_API_KEY || '' }}
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ github.event.inputs.provider == 'Google AI' && secrets.GOOGLE_GENERATIVE_AI_API_KEY || '' }}
+
+      - name: Upload sync results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lapras-sync-results-${{ github.event.inputs.provider }}
+          path: |
+            before.md
+            after.md
+            diff.md
+          retention-days: 7

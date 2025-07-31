@@ -1,0 +1,42 @@
+name: Check dist
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check-dist:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build
+        run: npm run build
+        
+      - name: Check for uncommitted changes
+        run: |
+          if [ "$(git diff --stat)" != "" ]; then
+            echo "❌ dist/フォルダに未コミットの変更があります。"
+            echo "以下のコマンドを実行してコミットしてください："
+            echo ""
+            echo "npm run build"
+            echo "git add dist/"
+            echo "git commit -m 'chore: update dist'"
+            echo ""
+            echo "差分:"
+            git diff
+            exit 1
+          else
+            echo "✅ dist/フォルダは最新です！"
+          fi
