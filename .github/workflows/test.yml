@@ -1,0 +1,75 @@
+name: Test Resume Sync Action
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build Action
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build action
+        run: npm run build
+
+      - name: Upload built action
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-action
+          path: |
+            dist/
+            action.yml
+            sample_resume.md
+          retention-days: 1
+
+  test:
+    runs-on: ubuntu-latest
+    name: Test with ${{ matrix.provider }}
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - provider: OpenAI
+            api_key_secret: OPENAI_API_KEY
+            with_key: openai_api_key
+          - provider: Anthropic
+            api_key_secret: ANTHROPIC_API_KEY
+            with_key: anthropic_api_key
+          - provider: Google AI
+            api_key_secret: GOOGLE_GENERATIVE_AI_API_KEY
+            with_key: GOOGLE_GENERATIVE_AI_API_KEY
+    steps:
+      - name: Download built action
+        uses: actions/download-artifact@v4
+        with:
+          name: built-action
+          path: .
+
+      - name: Test with ${{ matrix.provider }}
+        uses: ./
+        with:
+          resume_path: ./sample_resume.md
+          lapras_api_key: ${{ secrets.LAPRAS_API_KEY }}
+          ${{ matrix.with_key }}: ${{ secrets[matrix.api_key_secret] }}
+
+      - name: Upload sync results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lapras-sync-results-${{ matrix.provider }}
+          path: |
+            before.md
+            after.md
+            diff.md
+          retention-days: 7

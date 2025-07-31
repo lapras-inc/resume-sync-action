@@ -1,0 +1,38 @@
+name: 'LAPRAS Resume Sync'
+description: 'Sync GitHub resume to LAPRAS profile'
+author: 'LAPRAS Inc.'
+branding:
+  icon: 'refresh-cw'
+  color: 'blue'
+
+inputs:
+  resume_path:
+    description: 'Path to resume markdown file'
+    required: true
+  lapras_api_key:
+    description: 'LAPRAS API key'
+    required: true
+  openai_api_key:
+    description: 'OpenAI API key'
+    required: false
+  anthropic_api_key:
+    description: 'Anthropic API key'
+    required: false
+  GOOGLE_GENERATIVE_AI_API_KEY:
+    description: 'Google API key'
+    required: false
+  llm_model:
+    description: 'LLM model to use (optional)'
+    required: false
+
+outputs:
+  before_state:
+    description: 'Before state of LAPRAS Career'
+  after_state:
+    description: 'After state of LAPRAS Career'
+  diff:
+    description: 'Diff of LAPRAS'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
