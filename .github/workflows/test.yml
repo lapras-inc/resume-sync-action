@@ -2,6 +2,15 @@ name: Test Resume Sync Action
 
 on:
   workflow_dispatch:
+    inputs:
+      provider:
+        description: 'AI Provider to use'
+        required: true
+        type: choice
+        options:
+          - OpenAI
+          - Anthropic
+          - Google AI
 
 jobs:
   build:
@@ -34,21 +43,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    name: Test with ${{ matrix.provider }}
+    name: Test with ${{ github.event.inputs.provider }}
     needs: build
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - provider: OpenAI
-            api_key_secret: OPENAI_API_KEY
-            with_key: openai_api_key
-          - provider: Anthropic
-            api_key_secret: ANTHROPIC_API_KEY
-            with_key: anthropic_api_key
-          - provider: Google AI
-            api_key_secret: GOOGLE_GENERATIVE_AI_API_KEY
-            with_key: GOOGLE_GENERATIVE_AI_API_KEY
     steps:
       - name: Download built action
         uses: actions/download-artifact@v4
@@ -56,18 +52,20 @@ jobs:
           name: built-action
           path: .
 
-      - name: Test with ${{ matrix.provider }}
+      - name: Test with ${{ github.event.inputs.provider }}
         uses: ./
         with:
           resume_path: ./sample_resume.md
           lapras_api_key: ${{ secrets.LAPRAS_API_KEY }}
-          ${{ matrix.with_key }}: ${{ secrets[matrix.api_key_secret] }}
+          openai_api_key: ${{ github.event.inputs.provider == 'OpenAI' && secrets.OPENAI_API_KEY || '' }}
+          anthropic_api_key: ${{ github.event.inputs.provider == 'Anthropic' && secrets.ANTHROPIC_API_KEY || '' }}
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ github.event.inputs.provider == 'Google AI' && secrets.GOOGLE_GENERATIVE_AI_API_KEY || '' }}
 
       - name: Upload sync results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lapras-sync-results-${{ matrix.provider }}
+          name: lapras-sync-results-${{ github.event.inputs.provider }}
           path: |
             before.md
             after.md
