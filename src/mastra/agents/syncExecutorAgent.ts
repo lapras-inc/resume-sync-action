@@ -5,7 +5,7 @@ import { selectLLMModel } from "../../utils/llmSelector";
 import { getMCPClient } from "../../utils/mcpHelper";
 
 /**
- * 同期計画に基づいてLAPRASへの同期を実行するエージェント
+ * LAPRASへの同期を実行するエージェント
  */
 export const syncExecutorAgent = new Agent({
   name: "lapras-sync-executor",
