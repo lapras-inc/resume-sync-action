@@ -13,10 +13,10 @@ export const syncExecutorAgent = new Agent({
 
 ## 同期手順
 1. 職歴(experience_list)
-- LAPRAS上の現在の職歴の状態と、新しい職歴の内容を比較して、適切なツールを利用してLAPRASの職歴に同期する
-- 同じような期間・内容の職歴がLAPRASの職歴に既にある場合 -> 現在の職歴のidと対応する新しい職歴の内容をもとに update_experience ツールを実行する
-- LAPRASの職歴には存在しない新しい職歴がある場合 -> create_experience ツールを実行する
-- LAPRASの職歴には存在するが、新しい職歴にはない場合 -> delete_experience ツールを実行する
+- 現在のLAPRASの職歴の状態と、新しい職歴の内容を比較して、適切なツールを利用してLAPRASの職歴に同期する
+- 同じような期間・内容の職歴が現在のLAPRASの職歴に既にある場合 -> 現在の職歴のidと対応する新しい職歴の内容をもとに update_experience ツールを実行する
+- 現在のLAPRASの職歴には存在しない新しい職歴がある場合 -> create_experience ツールを実行して新しい職歴を作成する
+- 現在のLAPRASの職歴には存在するが、新しい職歴にはない場合 -> delete_experience ツールを実行して削除する
 
 2. 活かせる経験・スキル(want_to_do)
 - 新しい活かせる経験・スキルの内容を update_want_to_do ツールを実行して同期する
@@ -25,10 +25,6 @@ export const syncExecutorAgent = new Agent({
 3. 職務要約(job_summary)
 - 新しい職務要約の内容を update_job_summary ツールを実行して同期する
 - もし、新しい職務要約がない場合は、何もしない
-
-## 重要:
-- **内容の誇張はしない。正確に同期する**
-- 職歴のdescriptionと活かせる経験・スキル、職務要約は**markdown形式で構造化して同期する**
 `,
   model: () => selectLLMModel(),
   tools: async () => await getMCPClient().getTools(),
