@@ -1,4 +1,5 @@
 import * as core from "@actions/core";
+import { ENV_VARS } from "../config/constants";
 
 export interface ActionInputs {
   resumePath: string;
@@ -34,11 +35,11 @@ export function setupEnvironmentVariables(inputs: ActionInputs): void {
   console.log(`  GOOGLE_GENERATIVE_AI_API_KEY: ${inputs.googleApiKey ? "SET" : "NOT SET"}`);
   console.log(`  LLM_MODEL: ${inputs.llmModel || "NOT SET"}`);
 
-  process.env.LAPRAS_API_KEY = inputs.laprasApiKey;
-  if (inputs.openaiApiKey) process.env.OPENAI_API_KEY = inputs.openaiApiKey;
-  if (inputs.anthropicApiKey) process.env.ANTHROPIC_API_KEY = inputs.anthropicApiKey;
-  if (inputs.googleApiKey) process.env.GOOGLE_GENERATIVE_AI_API_KEY = inputs.googleApiKey;
-  if (inputs.llmModel) process.env.LLM_MODEL = inputs.llmModel;
+  process.env[ENV_VARS.LAPRAS_API_KEY] = inputs.laprasApiKey;
+  if (inputs.openaiApiKey) process.env[ENV_VARS.OPENAI_API_KEY] = inputs.openaiApiKey;
+  if (inputs.anthropicApiKey) process.env[ENV_VARS.ANTHROPIC_API_KEY] = inputs.anthropicApiKey;
+  if (inputs.googleApiKey) process.env[ENV_VARS.GOOGLE_GENERATIVE_AI_API_KEY] = inputs.googleApiKey;
+  if (inputs.llmModel) process.env[ENV_VARS.LLM_MODEL] = inputs.llmModel;
 
   console.log("✅ Environment variables set successfully");
 }

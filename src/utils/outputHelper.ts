@@ -3,6 +3,7 @@ import artifactClient from "@actions/artifact";
 import * as core from "@actions/core";
 import { writeFile } from "fs/promises";
 import { createPatch } from "diff";
+import { getEnvironmentVariable } from "../config/environment";
 
 export interface WorkflowResult {
   artifacts: {
@@ -16,7 +17,7 @@ export interface WorkflowResult {
  */
 async function uploadArtifacts(before: string, after: string, diff: string): Promise<void> {
   const artifactName = "lapras-sync-results";
-  const tmpDir = process.env.RUNNER_TEMP || "/tmp";
+  const tmpDir = getEnvironmentVariable('RUNNER_TEMP') || "/tmp";
   const beforePath = join(tmpDir, "before.md");
   const afterPath = join(tmpDir, "after.md");
   const diffPath = join(tmpDir, "diff.patch");

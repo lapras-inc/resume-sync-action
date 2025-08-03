@@ -1,6 +1,13 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { google } from "@ai-sdk/google";
 import { openai } from "@ai-sdk/openai";
+import { 
+  hasEnvironmentVariable, 
+  getEnvironmentVariable,
+  hasValidLLMProvider,
+  getLLMProviderName as getProviderName
+} from "../config/environment";
+import { DEFAULT_LLM_MODELS } from "../config/constants";
 
 /**
  * 利用可能なLLMプロバイダーを検出して適切なモデルを返す
@@ -9,20 +16,22 @@ export function selectLLMModel():
   | ReturnType<typeof openai>
   | ReturnType<typeof anthropic>
   | ReturnType<typeof google> {
+  const customModel = getEnvironmentVariable('LLM_MODEL');
+  
   // Anthropic
-  if (process.env.ANTHROPIC_API_KEY) {
-    const model = process.env.LLM_MODEL || "claude-sonnet-4-20250514";
+  if (hasEnvironmentVariable('ANTHROPIC_API_KEY')) {
+    const model = customModel || DEFAULT_LLM_MODELS.ANTHROPIC;
     return anthropic(model);
   }
 
   // Google
-  if (process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-    const model = process.env.LLM_MODEL || "gemini-2.5-flash";
+  if (hasEnvironmentVariable('GOOGLE_GENERATIVE_AI_API_KEY')) {
+    const model = customModel || DEFAULT_LLM_MODELS.GOOGLE;
     return google(model);
   }
 
   // OpenAI
-  const model = process.env.LLM_MODEL || "gpt-4.1-mini";
+  const model = customModel || DEFAULT_LLM_MODELS.OPENAI;
   return openai(model);
 }
 
@@ -30,21 +39,12 @@ export function selectLLMModel():
  * LLMプロバイダーが設定されているかチェック
  */
 export function hasLLMProvider(): boolean {
-  const providers = [
-    process.env.OPENAI_API_KEY,
-    process.env.ANTHROPIC_API_KEY,
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-  ].filter(Boolean);
-
-  return providers.length === 1;
+  return hasValidLLMProvider();
 }
 
 /**
  * 現在のLLMプロバイダー名を取得
  */
 export function getLLMProviderName(): string {
-  if (process.env.OPENAI_API_KEY) return "OpenAI";
-  if (process.env.ANTHROPIC_API_KEY) return "Anthropic";
-  if (process.env.GOOGLE_GENERATIVE_AI_API_KEY) return "Google";
-  return "None";
+  return getProviderName();
 }
