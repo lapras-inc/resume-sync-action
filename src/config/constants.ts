@@ -4,10 +4,10 @@
 
 // API設定
 export const API_CONFIG = {
-  LAPRAS_BASE_URL: 'https://api.lapras.com/public/me',
+  LAPRAS_BASE_URL: 'https://lapras.com/api/mcp',
   MCP_SERVER: {
     COMMAND: 'npx',
-    ARGS: ['-y', '@lapras-inc/lapras-mcp-server'],
+    ARGS: ['-y', '@lapras-inc/lapras-mcp-server'] as string[],
   },
 } as const;
 
