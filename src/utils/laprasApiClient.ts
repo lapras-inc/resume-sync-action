@@ -5,15 +5,15 @@ import { API_CONFIG } from "../config/constants";
 const BASE_URL = API_CONFIG.LAPRAS_BASE_URL;
 
 export const getCurrentLaprasState = async (): Promise<LaprasState> => {
-  const apiKey = getEnvironmentVariable('LAPRAS_API_KEY');
+  const apiKey = getEnvironmentVariable("LAPRAS_API_KEY");
   if (!apiKey) {
-    throw new Error('LAPRAS_API_KEY is not set in environment variables');
+    throw new Error("LAPRAS_API_KEY is not set in environment variables");
   }
-  
+
   const headers = {
     Authorization: `Bearer ${apiKey}`,
   };
-  
+
   const [experiences, jobSummary, wantToDo] = (await Promise.all(
     [
       fetch(`${BASE_URL}/experiences`, { headers }),

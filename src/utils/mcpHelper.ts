@@ -6,11 +6,11 @@ let mcpClient: MCPClient | null = null;
 
 export const getMCPClient = () => {
   if (!mcpClient) {
-    const apiKey = getEnvironmentVariable('LAPRAS_API_KEY');
+    const apiKey = getEnvironmentVariable("LAPRAS_API_KEY");
     if (!apiKey) {
-      throw new Error('LAPRAS_API_KEY is not set in environment variables');
+      throw new Error("LAPRAS_API_KEY is not set in environment variables");
     }
-    
+
     mcpClient = new MCPClient({
       servers: {
         lapras: {
