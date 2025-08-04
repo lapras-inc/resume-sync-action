@@ -7,7 +7,7 @@ lerna-debug.log*
 .pnpm-debug.log*
 
 # Build
-dist/
+# dist/ # GitHub Actionsではビルド成果物をコミットする必要があるため除外しない
 *.tsbuildinfo
 
 # Environment
