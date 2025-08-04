@@ -1,8 +1,8 @@
 import { Mastra } from "@mastra/core";
-import { syncWorkflow } from "./workflows/syncWorkflow";
 import { PinoLogger } from "@mastra/loggers";
 import { parseAgent } from "./agents/parseAgent";
 import { syncExecutorAgent } from "./agents/syncExecutorAgent";
+import { syncWorkflow } from "./workflows/syncWorkflow";
 
 /**
  * Mastraインスタンスを作成する

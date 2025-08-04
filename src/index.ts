@@ -1,9 +1,9 @@
 import * as core from "@actions/core";
 import { readFile } from "fs/promises";
 import { mastra } from "./mastra";
+import { getActionInputs, setupEnvironmentVariables } from "./utils/inputHelper";
 import { getLLMProviderName, hasLLMProvider } from "./utils/llmSelector";
 import { closeMCPClient } from "./utils/mcpHelper";
-import { getActionInputs, setupEnvironmentVariables } from "./utils/inputHelper";
 import { handleWorkflowOutput } from "./utils/outputHelper";
 
 /**

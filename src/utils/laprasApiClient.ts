@@ -1,6 +1,6 @@
-import type { Experience, LaprasState } from "../types";
-import { getEnvironmentVariable } from "../config/environment";
 import { API_CONFIG } from "../config/constants";
+import { getEnvironmentVariable } from "../config/environment";
+import type { Experience, LaprasState } from "../types";
 
 const BASE_URL = API_CONFIG.LAPRAS_BASE_URL;
 

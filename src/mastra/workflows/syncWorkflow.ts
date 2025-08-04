@@ -1,9 +1,9 @@
 import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
-import { parseResume } from "../agents/parseAgent";
-import { executeSync } from "../agents/syncExecutorAgent";
 import { LaprasStateSchema, ParsedResumeSchema } from "../../types";
 import { getCurrentLaprasState } from "../../utils/laprasApiClient";
+import { parseResume } from "../agents/parseAgent";
+import { executeSync } from "../agents/syncExecutorAgent";
 
 const parseResumeStep = createStep({
   id: "parseResume",

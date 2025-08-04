@@ -1,6 +1,6 @@
 import { MCPClient } from "@mastra/mcp";
-import { getEnvironmentVariable } from "../config/environment";
 import { API_CONFIG } from "../config/constants";
+import { getEnvironmentVariable } from "../config/environment";
 
 let mcpClient: MCPClient | null = null;
 

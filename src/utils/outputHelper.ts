@@ -1,8 +1,8 @@
-import { join } from "path";
 import artifactClient from "@actions/artifact";
 import * as core from "@actions/core";
-import { writeFile } from "fs/promises";
 import { createPatch } from "diff";
+import { writeFile } from "fs/promises";
+import { join } from "path";
 import { getEnvironmentVariable } from "../config/environment";
 
 export interface WorkflowResult {
