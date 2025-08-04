@@ -1,4 +1,4 @@
-# LAPRAS Resume Sync Action（実験的・beta版）
+# LAPRAS Resume Sync Action（α版）
 
 GitHubで管理している職務経歴書を[LAPRAS](https://lapras.com)のCareer情報に自動同期するGitHub Actionです。
 
