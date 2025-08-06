@@ -1,8 +1,7 @@
-import type { ExperienceApiParamsList, JobSummary, LaprasState, WantToDo } from "../../../types";
+import type { ExperienceApiParamsList, JobSummary, WantToDo } from "../../../types";
 import {
   createExperience,
   deleteAllExperiences,
-  restoreLaprasState,
   updateJobSummary as updateJobSummaryApi,
   updateWantToDo as updateWantToDoApi,
 } from "../../../utils/laprasApiClient";
@@ -82,18 +81,3 @@ export async function updateWantToDoStep(wantToDo: WantToDo): Promise<{
   }
 }
 
-/**
- * ロールバックステップ（元の状態に戻す）
- */
-export async function rollbackStep(originalState: LaprasState): Promise<void> {
-  console.log("Rolling back to original state...");
-  try {
-    await restoreLaprasState(originalState);
-    console.log("Successfully rolled back to original state");
-  } catch (error) {
-    console.error("Failed to rollback:", error);
-    throw new Error(
-      `Critical error: Failed to rollback to original state. Manual intervention may be required. ${error instanceof Error ? error.message : String(error)}`,
-    );
-  }
-}
