@@ -3,7 +3,6 @@ import { readFile } from "fs/promises";
 import { mastra } from "./mastra";
 import { getActionInputs, setupEnvironmentVariables } from "./utils/inputHelper";
 import { getLLMProviderName, hasLLMProvider } from "./utils/llmSelector";
-import { closeMCPClient } from "./utils/mcpHelper";
 import { handleWorkflowOutput } from "./utils/outputHelper";
 
 /**
@@ -58,9 +57,6 @@ async function run(): Promise<void> {
     } else {
       core.setFailed("An unexpected error occurred");
     }
-  } finally {
-    // MCPクライアントのクリーンアップ
-    await closeMCPClient();
   }
 }
 

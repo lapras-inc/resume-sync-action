@@ -51,6 +51,7 @@ function generateDiff(before: string, after: string): string {
  */
 export async function handleWorkflowOutput(result: WorkflowResult): Promise<void> {
   core.info("Creating artifacts...");
+  console.log(result);
 
   // 差分を生成
   const diff = generateDiff(result.artifacts.before, result.artifacts.after);
