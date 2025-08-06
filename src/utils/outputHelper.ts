@@ -4,8 +4,7 @@ import { createPatch } from "diff";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 import { getEnvironmentVariable } from "../config/environment";
-import { SyncResult } from "../types";
-
+import type { SyncResult } from "../types";
 
 /**
  * Artifactをアップロード

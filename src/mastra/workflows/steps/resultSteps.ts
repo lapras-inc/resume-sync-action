@@ -1,6 +1,6 @@
 import { createStep } from "@mastra/core/workflows";
 import { z } from "zod";
-import { SyncResultSchema, type LaprasState } from "../../../types";
+import { type LaprasState, SyncResultSchema } from "../../../types";
 import { getCurrentLaprasState, restoreLaprasState } from "../../../utils/laprasApiClient";
 import { formatState } from "../utils/formatState";
 
@@ -18,7 +18,7 @@ export const rollbackStep = createStep({
   outputSchema: SyncResultSchema,
   execute: async ({ inputData }) => {
     console.error("❌ Sync failed, rolling back...");
-    
+
     // ロールバック処理を実行
     console.log("Rolling back to original state...");
     try {
