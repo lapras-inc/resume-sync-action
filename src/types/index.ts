@@ -98,6 +98,16 @@ export const ValidationResultSchema = z.object({
   retryCount: z.number().default(0),
 });
 
+export const SyncResultSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  errors: z.array(z.string()).optional(),
+  artifacts: z.object({
+    before: z.string(),
+    after: z.string(),
+  }),
+});
+
 // 型定義のエクスポート
 export type Experience = z.infer<typeof ExperienceSchema>;
 export type ParsedResume = z.infer<typeof ParsedResumeSchema>;
@@ -109,3 +119,4 @@ export type WantToDo = z.infer<typeof WantToDoSchema>;
 export type ExperienceApiParams = z.infer<typeof ExperienceApiParamsSchema>;
 export type ExperienceApiParamsList = z.infer<typeof ExperienceApiParamsListSchema>;
 export type ValidationResult = z.infer<typeof ValidationResultSchema>;
+export type SyncResult = z.infer<typeof SyncResultSchema>;

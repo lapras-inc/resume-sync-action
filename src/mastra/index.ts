@@ -4,7 +4,7 @@ import { experienceParamsBuilderAgent } from "./agents/experienceParamsBuilderAg
 import { experienceParseAgent } from "./agents/experienceParseAgent";
 import { jobSummaryParseAgent } from "./agents/jobSummaryParseAgent";
 import { wantToDoParseAgent } from "./agents/wantToDoParseAgent";
-import { parallelSyncWorkflow } from "./workflows/parallelSyncWorkflow";
+import { syncWorkflow } from "./workflows/syncWorkflow";
 
 /**
  * Mastraインスタンスを作成する
@@ -17,7 +17,7 @@ export const mastra = new Mastra({
     experienceParamsBuilderAgent,
   },
   workflows: {
-    parallelSyncWorkflow,
+    syncWorkflow,
   },
   telemetry: {
     enabled: false,

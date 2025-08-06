@@ -7,30 +7,26 @@ import { processJobSummaryStep } from "./steps/processJobSummaryStep";
 import { processWantToDoStep } from "./steps/processWantToDoStep";
 import { rollbackStep, successStep } from "./steps/resultSteps";
 import { deleteExperiencesStep, syncAllStep } from "./steps/syncAllStep";
+import { SyncResultSchema } from "../../types";
 
 /**
  * メインの並列同期ワークフロー
  */
-export const parallelSyncWorkflow = createWorkflow({
+export const syncWorkflow = createWorkflow({
   id: "parallel-sync-workflow",
   description: "Sync resume to LAPRAS with parallel processing and validation",
   inputSchema: z.object({
     resumeContent: z.string(),
   }),
   outputSchema: z.object({
-    success: z.boolean(),
-    message: z.string(),
-    errors: z.array(z.string()).optional(),
-    artifacts: z.object({
-      before: z.string(),
-      after: z.string(),
-    }),
+    success: SyncResultSchema,
+    rollback: SyncResultSchema,
   }),
 })
   // 並列で初期処理を実行（リトライループ付き）
   .parallel([
     getCurrentStateStep,
-    experienceWorkflow, // ネストされたワークフローで職歴処理
+    experienceWorkflow,
     processJobSummaryStep,
     processWantToDoStep,
   ])

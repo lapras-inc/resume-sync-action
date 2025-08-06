@@ -1,6 +1,6 @@
 import { createStep } from "@mastra/core/workflows";
 import { z } from "zod";
-import type { LaprasState } from "../../../types";
+import { SyncResultSchema, type LaprasState } from "../../../types";
 import { getCurrentLaprasState } from "../../../utils/laprasApiClient";
 import { rollbackStep as executeRollback } from "./syncSteps";
 
@@ -15,15 +15,7 @@ export const rollbackStep = createStep({
     errors: z.array(z.string()).optional(),
     originalState: z.custom<LaprasState>(),
   }),
-  outputSchema: z.object({
-    success: z.boolean(),
-    message: z.string(),
-    errors: z.array(z.string()).optional(),
-    artifacts: z.object({
-      before: z.string(),
-      after: z.string(),
-    }),
-  }),
+  outputSchema: SyncResultSchema,
   execute: async ({ inputData }) => {
     console.error("❌ Sync failed, rolling back...");
     await executeRollback(inputData.originalState);
@@ -76,15 +68,7 @@ export const successStep = createStep({
     errors: z.array(z.string()).optional(),
     originalState: z.custom<LaprasState>(),
   }),
-  outputSchema: z.object({
-    success: z.boolean(),
-    message: z.string(),
-    errors: z.array(z.string()).optional(),
-    artifacts: z.object({
-      before: z.string(),
-      after: z.string(),
-    }),
-  }),
+  outputSchema: SyncResultSchema,
   execute: async ({ inputData }) => {
     // 更新後の状態を取得
     const newState = await getCurrentLaprasState();

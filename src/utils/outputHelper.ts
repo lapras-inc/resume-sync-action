@@ -4,13 +4,8 @@ import { createPatch } from "diff";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 import { getEnvironmentVariable } from "../config/environment";
+import { SyncResult } from "../types";
 
-export interface WorkflowResult {
-  artifacts: {
-    before: string;
-    after: string;
-  };
-}
 
 /**
  * Artifactをアップロード
@@ -49,9 +44,8 @@ function generateDiff(before: string, after: string): string {
 /**
  * ワークフローの結果を処理してアウトプットを設定
  */
-export async function handleWorkflowOutput(result: WorkflowResult): Promise<void> {
+export async function handleWorkflowOutput(result: SyncResult): Promise<void> {
   core.info("Creating artifacts...");
-  console.log(result);
 
   // 差分を生成
   const diff = generateDiff(result.artifacts.before, result.artifacts.after);
