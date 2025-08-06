@@ -1,6 +1,6 @@
 import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
-import type { ValidationResult, WantToDo } from "../../../types";
+import { type WantToDo, WantToDoSchema, ValidationResultSchema } from "../../../types";
 import { parseWantToDo } from "../../agents/wantToDoParseAgent";
 import { validateWantToDoStep } from "./validateWantToDoStep";
 
@@ -13,8 +13,8 @@ const parseAndValidateWantToDoWorkflow = createWorkflow({
     resumeContent: z.string(),
   }),
   outputSchema: z.object({
-    wantToDo: z.custom<WantToDo>(),
-    validation: z.custom<ValidationResult>(),
+    wantToDo: WantToDoSchema,
+    validation: ValidationResultSchema,
   }),
 })
   .dountil(
@@ -23,11 +23,11 @@ const parseAndValidateWantToDoWorkflow = createWorkflow({
       description: "Parse and validate want to do",
       inputSchema: z.object({
         resumeContent: z.string(),
-        validation: z.custom<ValidationResult>().optional(),
+        validation: ValidationResultSchema.optional(),
       }),
       outputSchema: z.object({
-        wantToDo: z.custom<WantToDo>(),
-        validation: z.custom<ValidationResult>(),
+        wantToDo: WantToDoSchema,
+        validation: ValidationResultSchema,
       }),
       execute: async ({ inputData }) => {
         // エラーがある場合はプロンプトに含める
@@ -77,7 +77,7 @@ export const processWantToDoStep = createStep({
     resumeContent: z.string(),
   }),
   outputSchema: z.object({
-    wantToDo: z.custom<WantToDo>(),
+    wantToDo: WantToDoSchema,
   }),
   execute: async ({ inputData }) => {
     const workflow = parseAndValidateWantToDoWorkflow;

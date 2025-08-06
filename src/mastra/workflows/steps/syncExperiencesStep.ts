@@ -1,6 +1,11 @@
 import { createStep } from "@mastra/core/workflows";
 import { z } from "zod";
-import type { ExperienceApiParamsList } from "../../../types";
+import {
+  ExperienceApiParamsListSchema,
+  JobSummarySchema,
+  LaprasStateSchema,
+  WantToDoSchema,
+} from "../../../types";
 import { createExperience } from "../../../utils/laprasApiClient";
 
 /**
@@ -10,7 +15,10 @@ export const syncExperiencesStep = createStep({
   id: "sync-experiences",
   description: "Sync new experiences to LAPRAS",
   inputSchema: z.object({
-    experienceParams: z.custom<ExperienceApiParamsList>(),
+    originalState: LaprasStateSchema,
+    experienceParams: ExperienceApiParamsListSchema,
+    jobSummary: JobSummarySchema,
+    wantToDo: WantToDoSchema,
   }),
   outputSchema: z.object({
     success: z.boolean(),

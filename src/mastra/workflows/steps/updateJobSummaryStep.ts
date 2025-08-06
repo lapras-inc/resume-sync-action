@@ -1,6 +1,11 @@
 import { createStep } from "@mastra/core/workflows";
 import { z } from "zod";
-import type { JobSummary } from "../../../types";
+import {
+  ExperienceApiParamsListSchema,
+  JobSummarySchema,
+  LaprasStateSchema,
+  WantToDoSchema,
+} from "../../../types";
 import { updateJobSummary as updateJobSummaryApi } from "../../../utils/laprasApiClient";
 
 /**
@@ -10,7 +15,10 @@ export const updateJobSummaryStep = createStep({
   id: "update-job-summary",
   description: "Update job summary in LAPRAS",
   inputSchema: z.object({
-    jobSummary: z.custom<JobSummary>(),
+    originalState: LaprasStateSchema,
+    experienceParams: ExperienceApiParamsListSchema,
+    jobSummary: JobSummarySchema,
+    wantToDo: WantToDoSchema,
   }),
   outputSchema: z.object({
     success: z.boolean(),

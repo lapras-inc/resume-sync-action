@@ -1,6 +1,10 @@
 import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
-import type { ExperienceApiParamsList, ExperienceList, ValidationResult } from "../../types";
+import {
+  ExperienceApiParamsListSchema,
+  ExperienceListSchema,
+  ValidationResultSchema,
+} from "../../types";
 import { buildExperienceParams } from "../agents/experienceParamsBuilderAgent";
 import { parseExperiences } from "../agents/experienceParseAgent";
 import { validateExperienceStep } from "./steps/validateExperienceStep";
@@ -15,7 +19,7 @@ const parseExperienceStep = createStep({
     resumeContent: z.string(),
   }),
   outputSchema: z.object({
-    experienceList: z.custom<ExperienceList>(),
+    experienceList: ExperienceListSchema,
   }),
   execute: async ({ inputData }) => {
     const experienceList = await parseExperiences(inputData.resumeContent);
@@ -30,12 +34,12 @@ const buildAndValidateStep = createStep({
   id: "build-validate",
   description: "Build and validate experience parameters",
   inputSchema: z.object({
-    experienceList: z.custom<ExperienceList>(),
-    validation: z.custom<ValidationResult>().optional(),
+    experienceList: ExperienceListSchema,
+    validation: ValidationResultSchema.optional(),
   }),
   outputSchema: z.object({
-    experienceParams: z.custom<ExperienceApiParamsList>(),
-    validation: z.custom<ValidationResult>(),
+    experienceParams: ExperienceApiParamsListSchema,
+    validation: ValidationResultSchema,
   }),
   execute: async ({ inputData }) => {
     // パラメータを組み立て
@@ -69,7 +73,7 @@ export const experienceWorkflow = createWorkflow({
     resumeContent: z.string(),
   }),
   outputSchema: z.object({
-    experienceParams: z.custom<ExperienceApiParamsList>(),
+    experienceParams: ExperienceApiParamsListSchema,
   }),
 })
   // まず職歴を解析（1回のみ）
@@ -85,18 +89,15 @@ export const experienceWorkflow = createWorkflow({
       id: "format-output",
       description: "Format the final output",
       inputSchema: z.object({
-        experienceParams: z.custom<ExperienceApiParamsList>(),
-        validation: z.custom<ValidationResult>(),
+        experienceParams: ExperienceApiParamsListSchema,
+        validation: ValidationResultSchema,
       }),
       outputSchema: z.object({
-        experienceParams: z.custom<ExperienceApiParamsList>(),
+        experienceParams: ExperienceApiParamsListSchema,
       }),
       execute: async ({ inputData }) => {
-        if (!inputData.validation.isValid && inputData.validation.retryCount >= 3) {
-          console.warn(
-            "Experience validation failed after 3 retries:",
-            inputData.validation.errors,
-          );
+        if (!inputData.validation.isValid) {
+          throw new Error("Experience validation failed. Parse experience failed. Please retry.");
         }
         return {
           experienceParams: inputData.experienceParams,

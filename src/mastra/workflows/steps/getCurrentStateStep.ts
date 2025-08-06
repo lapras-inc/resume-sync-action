@@ -1,6 +1,6 @@
 import { createStep } from "@mastra/core/workflows";
 import { z } from "zod";
-import type { LaprasState } from "../../../types";
+import { LaprasStateSchema } from "../../../types";
 import { getCurrentLaprasState } from "../../../utils/laprasApiClient";
 
 /**
@@ -13,7 +13,7 @@ export const getCurrentStateStep = createStep({
     resumeContent: z.string(),
   }),
   outputSchema: z.object({
-    originalState: z.custom<LaprasState>(),
+    originalState: LaprasStateSchema,
   }),
   execute: async () => {
     console.log("🔍 Getting current LAPRAS state...");

@@ -1,6 +1,11 @@
 import { createStep } from "@mastra/core/workflows";
 import { z } from "zod";
-import type { ExperienceApiParamsList, JobSummary, LaprasState, WantToDo } from "../../../types";
+import {
+  ExperienceApiParamsListSchema,
+  JobSummarySchema,
+  LaprasStateSchema,
+  WantToDoSchema,
+} from "../../../types";
 import { deleteAllExperiences } from "../../../utils/laprasApiClient";
 
 /**
@@ -10,16 +15,16 @@ export const deleteExperiencesStep = createStep({
   id: "delete-experiences",
   description: "Delete all existing experiences",
   inputSchema: z.object({
-    originalState: z.custom<LaprasState>(),
-    experienceParams: z.custom<ExperienceApiParamsList>(),
-    jobSummary: z.custom<JobSummary>(),
-    wantToDo: z.custom<WantToDo>(),
+    originalState: LaprasStateSchema,
+    experienceParams: ExperienceApiParamsListSchema,
+    jobSummary: JobSummarySchema,
+    wantToDo: WantToDoSchema,
   }),
   outputSchema: z.object({
-    originalState: z.custom<LaprasState>(),
-    experienceParams: z.custom<ExperienceApiParamsList>(),
-    jobSummary: z.custom<JobSummary>(),
-    wantToDo: z.custom<WantToDo>(),
+    originalState: LaprasStateSchema,
+    experienceParams: ExperienceApiParamsListSchema,
+    jobSummary: JobSummarySchema,
+    wantToDo: WantToDoSchema,
   }),
   execute: async ({ inputData }) => {
     console.log("Deleting all existing experiences...");

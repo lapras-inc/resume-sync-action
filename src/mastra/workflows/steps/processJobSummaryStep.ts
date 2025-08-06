@@ -1,6 +1,6 @@
 import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
-import type { JobSummary, ValidationResult } from "../../../types";
+import { type JobSummary, JobSummarySchema, ValidationResultSchema } from "../../../types";
 import { parseJobSummary } from "../../agents/jobSummaryParseAgent";
 import { validateJobSummaryStep } from "./validateJobSummaryStep";
 
@@ -13,8 +13,8 @@ const parseAndValidateJobSummaryWorkflow = createWorkflow({
     resumeContent: z.string(),
   }),
   outputSchema: z.object({
-    jobSummary: z.custom<JobSummary>(),
-    validation: z.custom<ValidationResult>(),
+    jobSummary: JobSummarySchema,
+    validation: ValidationResultSchema,
   }),
 })
   .dountil(
@@ -23,11 +23,11 @@ const parseAndValidateJobSummaryWorkflow = createWorkflow({
       description: "Parse and validate job summary",
       inputSchema: z.object({
         resumeContent: z.string(),
-        validation: z.custom<ValidationResult>().optional(),
+        validation: ValidationResultSchema.optional(),
       }),
       outputSchema: z.object({
-        jobSummary: z.custom<JobSummary>(),
-        validation: z.custom<ValidationResult>(),
+        jobSummary: JobSummarySchema,
+        validation: ValidationResultSchema,
       }),
       execute: async ({ inputData }) => {
         // エラーがある場合はプロンプトに含める
@@ -77,7 +77,7 @@ export const processJobSummaryStep = createStep({
     resumeContent: z.string(),
   }),
   outputSchema: z.object({
-    jobSummary: z.custom<JobSummary>(),
+    jobSummary: JobSummarySchema,
   }),
   execute: async ({ inputData }) => {
     const workflow = parseAndValidateJobSummaryWorkflow;

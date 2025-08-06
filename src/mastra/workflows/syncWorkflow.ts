@@ -5,10 +5,10 @@ import { experienceWorkflow } from "./experienceWorkflow";
 import { collectSyncResultsStep } from "./steps/collectSyncResultsStep";
 import { deleteExperiencesStep } from "./steps/deleteExperiencesStep";
 import { getCurrentStateStep } from "./steps/getCurrentStateStep";
-import { mergeDataStep } from "./steps/mergeDataStep";
 import { processJobSummaryStep } from "./steps/processJobSummaryStep";
 import { processWantToDoStep } from "./steps/processWantToDoStep";
-import { rollbackStep, successStep } from "./steps/resultSteps";
+import { rollbackStep } from "./steps/rollbackStep";
+import { successStep } from "./steps/successStep";
 import { syncExperiencesStep } from "./steps/syncExperiencesStep";
 import { updateJobSummaryStep } from "./steps/updateJobSummaryStep";
 import { updateWantToDoStep } from "./steps/updateWantToDoStep";
@@ -27,13 +27,18 @@ export const syncWorkflow = createWorkflow({
     rollback: SyncResultSchema,
   }),
 })
-  // 並列で初期処理を実行（リトライループ付き）
+  // 初期処理を実行
   .parallel([getCurrentStateStep, experienceWorkflow, processJobSummaryStep, processWantToDoStep])
-  // データを統合
-  .then(mergeDataStep)
+  // データをmapping
+  .map(async ({ inputData }) => ({
+    originalState: inputData["get-current-state"].originalState,
+    experienceParams: inputData["experience-workflow"].experienceParams,
+    jobSummary: inputData["process-job-summary"].jobSummary,
+    wantToDo: inputData["process-want-to-do"].wantToDo,
+  }))
   // 既存の職歴を削除
   .then(deleteExperiencesStep)
-  // 並列で新しいデータを同期
+  // 新しいデータを同期
   .parallel([syncExperiencesStep, updateJobSummaryStep, updateWantToDoStep])
   // 同期結果を収集
   .then(collectSyncResultsStep)

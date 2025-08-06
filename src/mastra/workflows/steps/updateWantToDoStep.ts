@@ -1,6 +1,11 @@
 import { createStep } from "@mastra/core/workflows";
 import { z } from "zod";
-import type { WantToDo } from "../../../types";
+import {
+  ExperienceApiParamsListSchema,
+  JobSummarySchema,
+  LaprasStateSchema,
+  WantToDoSchema,
+} from "../../../types";
 import { updateWantToDo as updateWantToDoApi } from "../../../utils/laprasApiClient";
 
 /**
@@ -10,7 +15,10 @@ export const updateWantToDoStep = createStep({
   id: "update-want-to-do",
   description: "Update want to do in LAPRAS",
   inputSchema: z.object({
-    wantToDo: z.custom<WantToDo>(),
+    originalState: LaprasStateSchema,
+    experienceParams: ExperienceApiParamsListSchema,
+    jobSummary: JobSummarySchema,
+    wantToDo: WantToDoSchema,
   }),
   outputSchema: z.object({
     success: z.boolean(),

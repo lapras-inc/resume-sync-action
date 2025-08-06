@@ -1,6 +1,7 @@
 import { createStep } from "@mastra/core/workflows";
 import { z } from "zod";
 import type { LaprasState } from "../../../types";
+import { deleteExperiencesStep } from "./deleteExperiencesStep";
 
 /**
  * 並列同期の結果を収集するステップ
@@ -21,16 +22,13 @@ export const collectSyncResultsStep = createStep({
       success: z.boolean(),
       error: z.string().optional(),
     }),
-    "delete-experiences": z.object({
-      originalState: z.custom<LaprasState>(),
-    }),
   }),
   outputSchema: z.object({
     success: z.boolean(),
     errors: z.array(z.string()).optional(),
     originalState: z.custom<LaprasState>(),
   }),
-  execute: async ({ inputData }) => {
+  execute: async ({ inputData, getStepResult }) => {
     const errors: string[] = [];
 
     // Collect errors from all sync operations
@@ -47,7 +45,7 @@ export const collectSyncResultsStep = createStep({
     return {
       success: errors.length === 0,
       errors: errors.length > 0 ? errors : undefined,
-      originalState: inputData["delete-experiences"].originalState,
+      originalState: getStepResult(deleteExperiencesStep).originalState,
     };
   },
 });
