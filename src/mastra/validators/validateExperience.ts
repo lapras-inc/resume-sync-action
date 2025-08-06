@@ -1,17 +1,16 @@
-import type { ExperienceApiParamsList, ValidationResult } from "../../../types";
+import type { ExperienceApiParamsList, ValidationResult } from "../../types";
 
 /**
  * 職歴パラメータの機械的バリデーション
  * AIを使わずに、純粋なロジックで検証を行う
  */
-export function validateExperienceStep(params: ExperienceApiParamsList): ValidationResult {
+export function validateExperience(params: ExperienceApiParamsList): ValidationResult {
   const errors: string[] = [];
 
   if (!params.experiences || params.experiences.length === 0) {
     return {
       isValid: false,
       errors: ["職歴が1件も含まれていません"],
-      retryCount: 0,
     };
   }
 
@@ -85,6 +84,5 @@ export function validateExperienceStep(params: ExperienceApiParamsList): Validat
   return {
     isValid: errors.length === 0,
     errors: errors.length > 0 ? errors : undefined,
-    retryCount: 0,
   };
 }

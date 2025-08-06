@@ -7,7 +7,7 @@ import {
 } from "../../types";
 import { buildExperienceParams } from "../agents/experienceParamsBuilderAgent";
 import { parseExperiences } from "../agents/experienceParseAgent";
-import { validateExperienceStep } from "./steps/validateExperienceStep";
+import { validateExperience } from "../validators/validateExperience";
 
 /**
  * 職歴を解析するステップ
@@ -36,10 +36,12 @@ const buildAndValidateStep = createStep({
   inputSchema: z.object({
     experienceList: ExperienceListSchema,
     validation: ValidationResultSchema.optional(),
+    retryCount: z.number().default(0),
   }),
   outputSchema: z.object({
     experienceParams: ExperienceApiParamsListSchema,
     validation: ValidationResultSchema,
+    retryCount: z.number(),
   }),
   execute: async ({ inputData }) => {
     // パラメータを組み立て
@@ -47,17 +49,15 @@ const buildAndValidateStep = createStep({
     const experienceParams = await buildExperienceParams(inputData.experienceList, errors);
 
     // バリデーション
-    const validation = validateExperienceStep(experienceParams);
+    const validation = validateExperience(experienceParams);
 
     // リトライカウントを更新
-    const retryCount = (inputData.validation?.retryCount ?? 0) + 1;
+    const retryCount = inputData.retryCount + 1;
 
     return {
       experienceParams,
-      validation: {
-        ...validation,
-        retryCount,
-      },
+      validation,
+      retryCount,
     };
   },
 });
@@ -80,8 +80,7 @@ export const experienceWorkflow = createWorkflow({
   .then(parseExperienceStep)
   // パラメータ組み立てとバリデーションをリトライループで実行
   .dountil(buildAndValidateStep, async ({ inputData }) => {
-    // バリデーションが成功するか、3回リトライしたら終了
-    return inputData.validation?.isValid === true || inputData.validation?.retryCount >= 3;
+    return inputData.validation?.isValid === true || inputData.retryCount >= 5;
   })
   // 最終的な出力を整形
   .then(
@@ -91,6 +90,7 @@ export const experienceWorkflow = createWorkflow({
       inputSchema: z.object({
         experienceParams: ExperienceApiParamsListSchema,
         validation: ValidationResultSchema,
+        retryCount: z.number(),
       }),
       outputSchema: z.object({
         experienceParams: ExperienceApiParamsListSchema,

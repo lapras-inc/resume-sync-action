@@ -1,10 +1,10 @@
-import type { JobSummary, ValidationResult } from "../../../types";
+import type { JobSummary, ValidationResult } from "../../types";
 
 /**
  * 職務要約の機械的バリデーション
  * AIを使わずに、純粋なロジックで検証を行う
  */
-export function validateJobSummaryStep(jobSummary: JobSummary): ValidationResult {
+export function validateJobSummary(jobSummary: JobSummary): ValidationResult {
   const errors: string[] = [];
 
   if (jobSummary.job_summary) {
@@ -19,6 +19,5 @@ export function validateJobSummaryStep(jobSummary: JobSummary): ValidationResult
   return {
     isValid: errors.length === 0,
     errors: errors.length > 0 ? errors : undefined,
-    retryCount: 0,
   };
 }

@@ -1,8 +1,8 @@
 import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
-import { type WantToDo, WantToDoSchema, ValidationResultSchema } from "../../../types";
+import { ValidationResultSchema, type WantToDo, WantToDoSchema } from "../../../types";
 import { parseWantToDo } from "../../agents/wantToDoParseAgent";
-import { validateWantToDoStep } from "./validateWantToDoStep";
+import { validateWantToDo } from "../../validators/validateWantToDo";
 
 /**
  * キャリア目標をパースしてバリデーションするワークフロー
@@ -24,10 +24,12 @@ const parseAndValidateWantToDoWorkflow = createWorkflow({
       inputSchema: z.object({
         resumeContent: z.string(),
         validation: ValidationResultSchema.optional(),
+        retryCount: z.number().default(0),
       }),
       outputSchema: z.object({
         wantToDo: WantToDoSchema,
         validation: ValidationResultSchema,
+        retryCount: z.number(),
       }),
       execute: async ({ inputData }) => {
         // エラーがある場合はプロンプトに含める
@@ -46,23 +48,21 @@ const parseAndValidateWantToDoWorkflow = createWorkflow({
         }
 
         // バリデーション
-        const validation = validateWantToDoStep(wantToDo);
+        const validation = validateWantToDo(wantToDo);
 
         // リトライカウントを更新
-        const retryCount = (inputData.validation?.retryCount ?? 0) + 1;
+        const retryCount = inputData.retryCount + 1;
 
         return {
           wantToDo,
-          validation: {
-            ...validation,
-            retryCount,
-          },
+          validation,
+          retryCount,
         };
       },
     }),
     async ({ inputData }) => {
       // バリデーションが成功するか、3回リトライしたら終了
-      return inputData.validation?.isValid === true || inputData.validation?.retryCount >= 3;
+      return inputData.validation?.isValid === true || inputData.retryCount >= 3;
     },
   )
   .commit();

@@ -1,10 +1,10 @@
-import type { ValidationResult, WantToDo } from "../../../types";
+import type { ValidationResult, WantToDo } from "../../types";
 
 /**
  * 今後のキャリア目標の機械的バリデーション
  * AIを使わずに、純粋なロジックで検証を行う
  */
-export function validateWantToDoStep(wantToDo: WantToDo): ValidationResult {
+export function validateWantToDo(wantToDo: WantToDo): ValidationResult {
   const errors: string[] = [];
 
   if (wantToDo.want_to_do) {
@@ -19,6 +19,5 @@ export function validateWantToDoStep(wantToDo: WantToDo): ValidationResult {
   return {
     isValid: errors.length === 0,
     errors: errors.length > 0 ? errors : undefined,
-    retryCount: 0,
   };
 }

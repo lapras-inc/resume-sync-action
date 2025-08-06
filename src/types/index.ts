@@ -95,7 +95,6 @@ export const ExperienceApiParamsListSchema = z.object({
 export const ValidationResultSchema = z.object({
   isValid: z.boolean(),
   errors: z.array(z.string()).optional(),
-  retryCount: z.number().default(0),
 });
 
 export const SyncResultSchema = z.object({

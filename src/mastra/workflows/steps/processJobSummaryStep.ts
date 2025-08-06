@@ -2,7 +2,7 @@ import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
 import { type JobSummary, JobSummarySchema, ValidationResultSchema } from "../../../types";
 import { parseJobSummary } from "../../agents/jobSummaryParseAgent";
-import { validateJobSummaryStep } from "./validateJobSummaryStep";
+import { validateJobSummary } from "../../validators/validateJobSummary";
 
 /**
  * 職務要約をパースしてバリデーションするワークフロー
@@ -24,10 +24,12 @@ const parseAndValidateJobSummaryWorkflow = createWorkflow({
       inputSchema: z.object({
         resumeContent: z.string(),
         validation: ValidationResultSchema.optional(),
+        retryCount: z.number().default(0),
       }),
       outputSchema: z.object({
         jobSummary: JobSummarySchema,
         validation: ValidationResultSchema,
+        retryCount: z.number(),
       }),
       execute: async ({ inputData }) => {
         // エラーがある場合はプロンプトに含める
@@ -46,23 +48,21 @@ const parseAndValidateJobSummaryWorkflow = createWorkflow({
         }
 
         // バリデーション
-        const validation = validateJobSummaryStep(jobSummary);
+        const validation = validateJobSummary(jobSummary);
 
         // リトライカウントを更新
-        const retryCount = (inputData.validation?.retryCount ?? 0) + 1;
+        const retryCount = inputData.retryCount + 1;
 
         return {
           jobSummary,
-          validation: {
-            ...validation,
-            retryCount,
-          },
+          validation,
+          retryCount,
         };
       },
     }),
     async ({ inputData }) => {
       // バリデーションが成功するか、3回リトライしたら終了
-      return inputData.validation?.isValid === true || inputData.validation?.retryCount >= 3;
+      return inputData.validation?.isValid === true || inputData.retryCount >= 3;
     },
   )
   .commit();
