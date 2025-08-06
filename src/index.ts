@@ -35,7 +35,7 @@ async function run(): Promise<void> {
 
     // ワークフローの実行
     core.info("Starting sync workflow...");
-    const run = await mastra.getWorkflow("syncWorkflow").createRunAsync();
+    const run = await mastra.getWorkflow("parallelSyncWorkflow").createRunAsync();
     const result = await run.start({
       inputData: {
         resumeContent,
