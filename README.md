@@ -15,7 +15,7 @@ GitHubで管理している職務経歴書を[LAPRAS](https://lapras.com)のCare
 - 今後のキャリアでやりたいこと
 - 職務要約
 - 活かせる経験スキル (近日対応予定)
-- Tech Skill (Coming Soon)
+- Tech Skill (近日対応予定)
 
 
 ## Usage
@@ -53,7 +53,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Sync Resume to LAPRAS
-        uses: lapras-inc/resume-sync-action@v0.1.0
+        uses: lapras-inc/resume-sync-action@v0.0.7
         with:
           resume_path: ./resume.md # 職務経歴書markdownファイルのパス
           lapras_api_key: ${{ secrets.LAPRAS_API_KEY }} # LAPRASの設定画面で発行したAPIキー
