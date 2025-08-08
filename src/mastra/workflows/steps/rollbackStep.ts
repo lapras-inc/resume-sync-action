@@ -16,16 +16,20 @@ export const rollbackStep = createStep({
     originalState: z.custom<LaprasState>(),
   }),
   outputSchema: SyncResultSchema,
-  execute: async ({ inputData }) => {
-    console.error("❌ Sync failed, rolling back...");
+  execute: async ({ inputData, mastra }) => {
+    const logger = mastra?.getLogger();
+
+    logger?.error("❌ Sync failed, rolling back...");
 
     // ロールバック処理を実行
-    console.log("Rolling back to original state...");
+    logger?.info("Rolling back to original state...");
     try {
       await restoreLaprasState(inputData.originalState);
-      console.log("Successfully rolled back to original state");
+      logger?.info("Successfully rolled back to original state");
     } catch (error) {
-      console.error("Failed to rollback:", error);
+      logger?.error(
+        `Failed to rollback: ${error instanceof Error ? error.message : String(error)}`,
+      );
       throw new Error(
         `Critical error: Failed to rollback to original state. Manual intervention may be required. ${error instanceof Error ? error.message : String(error)}`,
       );

@@ -26,10 +26,13 @@ export const deleteExperiencesStep = createStep({
     jobSummary: JobSummarySchema,
     wantToDo: WantToDoSchema,
   }),
-  execute: async ({ inputData }) => {
-    console.log("Deleting all existing experiences...");
+  execute: async ({ inputData, mastra }) => {
+    const logger = mastra?.getLogger();
+    const count = inputData.originalState.experience_list.length;
+
+    logger?.info(`Deleting ${count} existing experiences...`);
     await deleteAllExperiences();
-    console.log("All experiences deleted successfully");
+    logger?.info(`✅ Deleted ${count} experiences`);
 
     // Pass through the data for the next steps
     return inputData;

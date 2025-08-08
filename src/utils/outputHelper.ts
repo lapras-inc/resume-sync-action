@@ -44,15 +44,28 @@ function generateDiff(before: string, after: string): string {
  * ワークフローの結果を処理してアウトプットを設定
  */
 export async function handleWorkflowOutput(result: SyncResult): Promise<void> {
-  core.info("Creating artifacts...");
+  core.info("📦 Creating artifacts...");
 
   // 差分を生成
   const diff = generateDiff(result.artifacts.before, result.artifacts.after);
-  console.log("🔍 Diff:");
-  console.log(diff);
+
+  // 差分のサマリーを表示
+  const diffLines = diff.split("\n");
+  let addedCount = 0;
+  let removedCount = 0;
+
+  diffLines.forEach((line) => {
+    if (line.startsWith("+") && !line.startsWith("+++")) addedCount++;
+    if (line.startsWith("-") && !line.startsWith("---")) removedCount++;
+  });
+
+  core.info(`📊 Changes Summary:`);
+  core.info(`  Added lines: ${addedCount}`);
+  core.info(`  Removed lines: ${removedCount}`);
 
   // Artifactをアップロード（diffも含む）
   await uploadArtifacts(result.artifacts.before, result.artifacts.after, diff);
+  core.info("✅ Artifacts uploaded successfully");
 
   // GitHub Actionsのアウトプットを設定
   setActionOutputs(result.artifacts.before, result.artifacts.after, diff);

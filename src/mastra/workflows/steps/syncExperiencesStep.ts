@@ -24,20 +24,23 @@ export const syncExperiencesStep = createStep({
     success: z.boolean(),
     errors: z.array(z.string()).optional(),
   }),
-  execute: async ({ inputData }) => {
-    console.log(`Syncing ${inputData.experienceParams.experiences.length} experiences...`);
+  execute: async ({ inputData, mastra }) => {
+    const logger = mastra?.getLogger();
+    const total = inputData.experienceParams.experiences.length;
     const errors: string[] = [];
 
-    for (let i = 0; i < inputData.experienceParams.experiences.length; i++) {
+    logger?.info(`Syncing ${total} experiences...`);
+
+    for (let i = 0; i < total; i++) {
       const exp = inputData.experienceParams.experiences[i];
+      const current = i + 1;
+
       try {
         await createExperience(exp);
-        console.log(
-          `Experience ${i + 1}/${inputData.experienceParams.experiences.length} created successfully`,
-        );
+        logger?.info(`Experience ${current}/${total} created successfully`);
       } catch (error) {
-        const errorMsg = `Failed to create experience ${i + 1}: ${error instanceof Error ? error.message : String(error)}`;
-        console.error(errorMsg);
+        const errorMsg = `Failed to create experience ${current}: ${error instanceof Error ? error.message : String(error)}`;
+        logger?.error(errorMsg);
         errors.push(errorMsg);
       }
     }

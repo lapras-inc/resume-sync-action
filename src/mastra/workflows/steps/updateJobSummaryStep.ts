@@ -24,15 +24,17 @@ export const updateJobSummaryStep = createStep({
     success: z.boolean(),
     error: z.string().optional(),
   }),
-  execute: async ({ inputData }) => {
-    console.log("Updating job summary...");
+  execute: async ({ inputData, mastra }) => {
+    const logger = mastra?.getLogger();
+
+    logger?.info("Updating job summary...");
     try {
       await updateJobSummaryApi(inputData.jobSummary);
-      console.log("Job summary updated successfully");
+      logger?.info("Job summary updated successfully");
       return { success: true };
     } catch (error) {
       const errorMsg = `Failed to update job summary: ${error instanceof Error ? error.message : String(error)}`;
-      console.error(errorMsg);
+      logger?.error(errorMsg);
       return { success: false, error: errorMsg };
     }
   },

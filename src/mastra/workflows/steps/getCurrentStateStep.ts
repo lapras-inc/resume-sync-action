@@ -15,9 +15,13 @@ export const getCurrentStateStep = createStep({
   outputSchema: z.object({
     originalState: LaprasStateSchema,
   }),
-  execute: async () => {
-    console.log("🔍 Getting current LAPRAS state...");
+  execute: async ({ mastra }) => {
+    const logger = mastra?.getLogger();
+
+    logger?.info("Getting current LAPRAS state...");
     const state = await getCurrentLaprasState();
+    logger?.info(`✅ Current state: ${state.experience_list.length} experiences`);
+
     return { originalState: state };
   },
 });

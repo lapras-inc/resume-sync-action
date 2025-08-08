@@ -28,12 +28,12 @@ export function getActionInputs(): ActionInputs {
  * 環境変数を設定
  */
 export function setupEnvironmentVariables(inputs: ActionInputs): void {
-  console.log("🔧 Setting up environment variables:");
-  console.log(`  LAPRAS_API_KEY: ${inputs.laprasApiKey ? "SET" : "NOT SET"}`);
-  console.log(`  OPENAI_API_KEY: ${inputs.openaiApiKey ? "SET" : "NOT SET"}`);
-  console.log(`  ANTHROPIC_API_KEY: ${inputs.anthropicApiKey ? "SET" : "NOT SET"}`);
-  console.log(`  GOOGLE_GENERATIVE_AI_API_KEY: ${inputs.googleApiKey ? "SET" : "NOT SET"}`);
-  console.log(`  LLM_MODEL: ${inputs.llmModel || "NOT SET"}`);
+  core.info("🔧 Setting up environment variables:");
+  core.info(`  LAPRAS_API_KEY: ${inputs.laprasApiKey ? "✓ SET" : "✗ NOT SET"}`);
+  core.info(`  OPENAI_API_KEY: ${inputs.openaiApiKey ? "✓ SET" : "✗ NOT SET"}`);
+  core.info(`  ANTHROPIC_API_KEY: ${inputs.anthropicApiKey ? "✓ SET" : "✗ NOT SET"}`);
+  core.info(`  GOOGLE_GENERATIVE_AI_API_KEY: ${inputs.googleApiKey ? "✓ SET" : "✗ NOT SET"}`);
+  core.info(`  LLM_MODEL: ${inputs.llmModel || "DEFAULT"}`);
 
   process.env[ENV_VARS.LAPRAS_API_KEY] = inputs.laprasApiKey;
   if (inputs.openaiApiKey) process.env[ENV_VARS.OPENAI_API_KEY] = inputs.openaiApiKey;
@@ -41,5 +41,5 @@ export function setupEnvironmentVariables(inputs: ActionInputs): void {
   if (inputs.googleApiKey) process.env[ENV_VARS.GOOGLE_GENERATIVE_AI_API_KEY] = inputs.googleApiKey;
   if (inputs.llmModel) process.env[ENV_VARS.LLM_MODEL] = inputs.llmModel;
 
-  console.log("✅ Environment variables set successfully");
+  core.info("✅ Environment variables configured");
 }

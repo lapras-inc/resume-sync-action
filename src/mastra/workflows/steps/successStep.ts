@@ -16,10 +16,12 @@ export const successStep = createStep({
     originalState: z.custom<LaprasState>(),
   }),
   outputSchema: SyncResultSchema,
-  execute: async ({ inputData }) => {
+  execute: async ({ inputData, mastra }) => {
+    const logger = mastra?.getLogger();
+
     // 更新後の状態を取得
     const newState = await getCurrentLaprasState();
-    console.log("✅ Sync completed successfully");
+    logger?.info("✅ Sync completed successfully");
 
     return {
       success: true,

@@ -21,8 +21,13 @@ const parseExperienceStep = createStep({
   outputSchema: z.object({
     experienceList: ExperienceListSchema,
   }),
-  execute: async ({ inputData }) => {
+  execute: async ({ inputData, mastra }) => {
+    const logger = mastra?.getLogger();
+
+    logger?.info("Parsing experiences from resume...");
     const experienceList = await parseExperiences(inputData.resumeContent);
+    logger?.info(`✅ Parsed ${experienceList.experiences.length} experiences`);
+
     return { experienceList };
   },
 });
@@ -43,9 +48,20 @@ const buildAndValidateStep = createStep({
     validation: ValidationResultSchema,
     retryCount: z.number(),
   }),
-  execute: async ({ inputData }) => {
+  execute: async ({ inputData, mastra }) => {
+    const logger = mastra?.getLogger();
+
     // パラメータを組み立て
     const errors = inputData.validation?.errors;
+
+    if (errors && errors.length > 0) {
+      logger?.info(
+        `Retrying experience parameter building (attempt ${(inputData.retryCount || 0) + 1})`,
+      );
+    } else {
+      logger?.info("Building experience parameters...");
+    }
+
     const experienceParams = await buildExperienceParams(inputData.experienceList, errors);
 
     // バリデーション
@@ -53,6 +69,14 @@ const buildAndValidateStep = createStep({
 
     // リトライカウントを更新
     const retryCount = (inputData.retryCount || 0) + 1;
+
+    if (validation.isValid) {
+      logger?.info("✅ Experience parsed successfully!");
+    } else {
+      logger?.warn(
+        `⚠️ Experience validation failed: ${validation.errors?.join(", ") || "Unknown error"}`,
+      );
+    }
 
     return {
       experienceParams,
@@ -96,10 +120,14 @@ export const experienceWorkflow = createWorkflow({
       outputSchema: z.object({
         experienceParams: ExperienceApiParamsListSchema,
       }),
-      execute: async ({ inputData }) => {
+      execute: async ({ inputData, mastra }) => {
+        const logger = mastra?.getLogger();
+
         if (!inputData.validation.isValid) {
+          logger?.error(`Experience validation failed after ${inputData.retryCount} attempts`);
           throw new Error("Experience validation failed. Parse experience failed. Please retry.");
         }
+
         return {
           experienceParams: inputData.experienceParams,
         };

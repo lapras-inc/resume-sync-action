@@ -24,15 +24,17 @@ export const updateWantToDoStep = createStep({
     success: z.boolean(),
     error: z.string().optional(),
   }),
-  execute: async ({ inputData }) => {
-    console.log("Updating want to do...");
+  execute: async ({ inputData, mastra }) => {
+    const logger = mastra?.getLogger();
+
+    logger?.info("Updating want to do...");
     try {
       await updateWantToDoApi(inputData.wantToDo);
-      console.log("Want to do updated successfully");
+      logger?.info("Want to do updated successfully");
       return { success: true };
     } catch (error) {
       const errorMsg = `Failed to update want to do: ${error instanceof Error ? error.message : String(error)}`;
-      console.error(errorMsg);
+      logger?.error(errorMsg);
       return { success: false, error: errorMsg };
     }
   },
