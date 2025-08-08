@@ -63,6 +63,8 @@ jobs:
           openai_api_key: ${{ secrets.OPENAI_API_KEY }} # OpenAIのAPIキー（AnthropicやGoogle AIの場合はanthropic_api_keyやGOOGLE_GENERATIVE_AI_API_KEYを使用）
 ```
 
+職務経歴書管理リポジトリで職務経歴書のファイルに変更がある場合、または手動でGitHub Actionsを実行することで、LAPRASのCareerページに自動同期されます。
+
 ## Options
 
 | Parameter | Required | Description |
