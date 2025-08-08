@@ -52,12 +52,13 @@ const buildAndValidateStep = createStep({
     const validation = validateExperience(experienceParams);
 
     // リトライカウントを更新
-    const retryCount = inputData.retryCount + 1;
+    const retryCount = (inputData.retryCount || 0) + 1;
 
     return {
       experienceParams,
       validation,
       retryCount,
+      experienceList: inputData.experienceList,
     };
   },
 });
