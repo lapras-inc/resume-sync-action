@@ -25,7 +25,7 @@ describe("inputHelper", () => {
         lapras_api_key: "test-lapras-key",
         openai_api_key: "",
         anthropic_api_key: "",
-        GOOGLE_GENERATIVE_AI_API_KEY: "",
+        google_generative_ai_api_key: "",
         llm_model: "",
       };
       return inputs[name] || "";
@@ -69,7 +69,7 @@ describe("inputHelper", () => {
         lapras_api_key: "test-lapras-key",
         openai_api_key: "test-openai-key",
         anthropic_api_key: "test-anthropic-key",
-        GOOGLE_GENERATIVE_AI_API_KEY: "test-google-key",
+        google_generative_ai_api_key: "test-google-key",
       };
       return inputs[name] || "";
     });

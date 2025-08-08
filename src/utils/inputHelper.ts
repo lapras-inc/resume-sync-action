@@ -19,7 +19,7 @@ export function getActionInputs(): ActionInputs {
     laprasApiKey: core.getInput("lapras_api_key", { required: true }),
     openaiApiKey: core.getInput("openai_api_key") || undefined,
     anthropicApiKey: core.getInput("anthropic_api_key") || undefined,
-    googleApiKey: core.getInput("GOOGLE_GENERATIVE_AI_API_KEY") || undefined,
+    googleApiKey: core.getInput("google_generative_ai_api_key") || undefined,
     llmModel: core.getInput("llm_model") || undefined,
   };
 }

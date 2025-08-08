@@ -11,6 +11,7 @@
 GitHubで管理している職務経歴書を[LAPRAS](https://lapras.com)のCareer情報に自動同期するGitHub Actionです。
 
 指定したパスの職務経歴書の情報をもとに[LAPRASのCareerページ](https://lapras.com/cv)の以下情報を更新します。
+
 - 職務経歴
 - 今後のキャリアでやりたいこと
 - 職務要約
