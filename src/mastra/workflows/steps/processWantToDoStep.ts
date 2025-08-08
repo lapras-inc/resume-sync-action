@@ -31,19 +31,20 @@ const parseAndValidateWantToDoWorkflow = createWorkflow({
         validation: ValidationResultSchema,
         retryCount: z.number(),
       }),
-      execute: async ({ inputData }) => {
+      execute: async ({ inputData, mastra }) => {
+        const logger = mastra?.getLogger();
         // エラーがある場合はプロンプトに含める
         const errors = inputData.validation?.errors;
         let wantToDo: WantToDo;
 
         if (errors && errors.length > 0) {
           // リトライ時はエラー内容を考慮して再生成
-          console.log(`📝 Retrying want to do parsing with error feedback...`);
+          logger?.info(`Retrying want to do parsing with error feedback...`);
           const errorFeedback = `前回のバリデーションエラー:\n${errors.join("\n")}\n\nこれらのエラーを修正して、適切なキャリア目標を生成してください。`;
           wantToDo = await parseWantToDo(`${inputData.resumeContent}\n\n${errorFeedback}`);
         } else {
           // 初回のパース
-          console.log("📝 Parsing want to do from resume...");
+          logger?.info("Parsing want to do from resume...");
           wantToDo = await parseWantToDo(inputData.resumeContent);
         }
 
@@ -52,6 +53,10 @@ const parseAndValidateWantToDoWorkflow = createWorkflow({
 
         // リトライカウントを更新
         const retryCount = inputData.retryCount + 1;
+
+        if (validation.isValid) {
+          logger?.info("✅ Want to do parsed successfully!");
+        }
 
         return {
           wantToDo,

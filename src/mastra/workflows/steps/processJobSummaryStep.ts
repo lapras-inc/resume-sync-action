@@ -31,19 +31,20 @@ const parseAndValidateJobSummaryWorkflow = createWorkflow({
         validation: ValidationResultSchema,
         retryCount: z.number(),
       }),
-      execute: async ({ inputData }) => {
+      execute: async ({ inputData, mastra }) => {
+        const logger = mastra?.getLogger();
         // エラーがある場合はプロンプトに含める
         const errors = inputData.validation?.errors;
         let jobSummary: JobSummary;
 
         if (errors && errors.length > 0) {
           // リトライ時はエラー内容を考慮して再生成
-          console.log(`📝 Retrying job summary parsing with error feedback...`);
+          logger?.info(`Retrying job summary parsing with error feedback...`);
           const errorFeedback = `前回のバリデーションエラー:\n${errors.join("\n")}\n\nこれらのエラーを修正して、適切な職務要約を生成してください。`;
           jobSummary = await parseJobSummary(`${inputData.resumeContent}\n\n${errorFeedback}`);
         } else {
           // 初回のパース
-          console.log("📝 Parsing job summary from resume...");
+          logger?.info("Parsing job summary from resume...");
           jobSummary = await parseJobSummary(inputData.resumeContent);
         }
 
@@ -53,6 +54,9 @@ const parseAndValidateJobSummaryWorkflow = createWorkflow({
         // リトライカウントを更新
         const retryCount = inputData.retryCount + 1;
 
+        if (validation.isValid) {
+          console.log("✅ Job summary parsed successfully!");
+        }
         return {
           jobSummary,
           validation,
