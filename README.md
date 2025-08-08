@@ -21,6 +21,11 @@ GitHubで管理している職務経歴書を[LAPRASのCareerページ](https://
 
 ## Usage
 
+詳細は[wikiページ](https://github.com/lapras-inc/resume-sync-action/wiki/resume%E2%80%90sync%E2%80%90action%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9) をご覧ください。
+
+<a href="https://github.com/lapras-inc/resume-sync-action/wiki/resume%E2%80%90sync%E2%80%90action%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9"><img width="800" alt="CleanShot 2025-08-08 at 18 16 09@2x" src="https://github.com/user-attachments/assets/3a65e7d4-b98d-44f2-9d0b-04e6df79a5ae" /></a>
+
+
 ### APIキーの取得
 
 1. **LAPRAS APIキー**の取得
