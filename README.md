@@ -8,15 +8,15 @@
 > [!WARNING]
 > このプロジェクトはα版です。機能や仕様が予告なく変更される可能性があります。本番環境での使用は推奨しません。
 
-GitHubで管理している職務経歴書を[LAPRAS](https://lapras.com)のCareer情報に自動同期するGitHub Actionです。
+GitHubで管理している職務経歴書を[LAPRASのCareerページ](https://lapras.com/cv)に自動同期するGitHub Actionです。
 
-指定したパスの職務経歴書の情報をもとに[LAPRASのCareerページ](https://lapras.com/cv)の以下情報を更新します。
+指定したパスの職務経歴書の情報をもとに以下情報を同期します。
 
 - 職務経歴
 - 今後のキャリアでやりたいこと
 - 職務要約
-- 活かせる経験スキル (近日対応予定)
-- Tech Skill (近日対応予定)
+-  (近日対応予定) 活かせる経験スキル
+-  (近日対応予定)Tech Skill
 
 
 ## Usage
@@ -29,7 +29,7 @@ GitHubで管理している職務経歴書を[LAPRAS](https://lapras.com)のCare
 
 2. **LLM APIキー**の取得（以下のいずれか1つ）
    - [OpenAI API Key](https://platform.openai.com/api-keys)
-   - [Anthropic API Key](https://console.anthropic.com/)
+   - [Anthropic API Key](https://console.anthropic.com/settings/keys)
    - [Google AI API Key](https://makersuite.google.com/app/apikey)
 
 ### GitHub Actionsの設定
