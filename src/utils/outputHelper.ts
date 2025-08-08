@@ -63,9 +63,15 @@ export async function handleWorkflowOutput(result: SyncResult): Promise<void> {
   core.info(`  Added lines: ${addedCount}`);
   core.info(`  Removed lines: ${removedCount}`);
 
+  core.info(`🔍 Diff:`);
+  core.info(diff);
+
   // Artifactをアップロード（diffも含む）
   await uploadArtifacts(result.artifacts.before, result.artifacts.after, diff);
   core.info("✅ Artifacts uploaded successfully");
+
+  core.info("--------------------------------");
+  core.info("LAPRASへの同期が完了しました🎉 https://lapras.com/cv から結果をご確認ください！");
 
   // GitHub Actionsのアウトプットを設定
   setActionOutputs(result.artifacts.before, result.artifacts.after, diff);
