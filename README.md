@@ -60,7 +60,9 @@ jobs:
         with:
           resume_path: ./resume.md # 職務経歴書markdownファイルのパス
           lapras_api_key: ${{ secrets.LAPRAS_API_KEY }} # LAPRASの設定画面で発行したAPIキー
-          openai_api_key: ${{ secrets.OPENAI_API_KEY }} # OpenAIのAPIキー（AnthropicやGoogle AIの場合はanthropic_api_keyやgoogle_generative_ai_api_keyを使用）
+          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+          # google_generative_ai_api_key: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
+          # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
 職務経歴書管理リポジトリで職務経歴書のファイルに変更がある場合、または手動でGitHub Actionsを実行することで、LAPRASのCareerページに自動同期されます。
