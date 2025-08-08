@@ -19,7 +19,7 @@ async function run(): Promise<void> {
     // LLMプロバイダーのチェック
     if (!hasLLMProvider()) {
       throw new Error(
-        "Exactly one LLM API key must be set. Please specify only one of: openai_api_key, anthropic_api_key, or GOOGLE_GENERATIVE_AI_API_KEY.",
+        "Exactly one LLM API key must be set. Please specify only one of: openai_api_key, anthropic_api_key, or google_generative_ai_api_key.",
       );
     }
 

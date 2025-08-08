@@ -69,7 +69,7 @@ jobs:
 | `lapras_api_key` | True | LAPRAS APIキー |
 | `openai_api_key` | False* | OpenAI APIキー |
 | `anthropic_api_key` | False* | Anthropic APIキー |
-| `GOOGLE_GENERATIVE_AI_API_KEY` | False* | Google AI APIキー |
+| `google_generative_ai_api_key` | False* | Google AI APIキー |
 | `llm_model` | False | 使用するLLMモデル名 |
 
 * LLMキーのいずれか1つが必須です。
