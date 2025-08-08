@@ -34,6 +34,8 @@ GitHubで管理している職務経歴書を[LAPRASのCareerページ](https://
 
 ### GitHub Actionsの設定
 
+取得したAPIキーをGitHubのSecretsに設定した上で、以下のGitHub Actionsの設定を行います。
+
 ```yaml
 name: Sync Resume to LAPRAS
 
