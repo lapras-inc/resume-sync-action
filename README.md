@@ -62,8 +62,11 @@ jobs:
       - name: Sync Resume to LAPRAS
         uses: lapras-inc/resume-sync-action@v0.8.0
         with:
-          resume_path: ./resume.md # 職務経歴書markdownファイルのパス
-          lapras_api_key: ${{ secrets.LAPRAS_API_KEY }} # LAPRASの設定画面で発行したAPIキー
+          # 職務経歴書markdownファイルのパス
+          resume_path: ./resume.md
+          # LAPRASの設定画面で発行したAPIキー
+          lapras_api_key: ${{ secrets.LAPRAS_API_KEY }}
+          # 利用するLLMのAPIキー
           openai_api_key: ${{ secrets.OPENAI_API_KEY }}
           # google_generative_ai_api_key: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
           # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
