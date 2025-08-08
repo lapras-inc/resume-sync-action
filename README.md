@@ -16,7 +16,7 @@ GitHubで管理している職務経歴書を[LAPRASのCareerページ](https://
 - 今後のキャリアでやりたいこと
 - 職務要約
 -  (近日対応予定) 活かせる経験スキル
--  (近日対応予定)Tech Skill
+-  (近日対応予定) Tech Skill
 
 
 ## Usage
