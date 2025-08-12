@@ -1,12 +1,9 @@
-# LAPRAS Resume Sync Action（α版）
+# LAPRAS Resume Sync Action（β）
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/lapras-inc/resume-sync-action?style=flat-square)](https://github.com/lapras-inc/resume-sync-action/releases)
 [![License](https://img.shields.io/github/license/lapras-inc/resume-sync-action?style=flat-square)](LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/lapras-inc/resume-sync-action?style=flat-square)](https://github.com/lapras-inc/resume-sync-action/issues)
 [![GitHub Marketplace](https://img.shields.io/badge/Marketplace-Resume%20Sync%20Action-blue?style=flat-square&logo=github)](https://github.com/marketplace/actions/lapras-resume-sync-action)
-
-> [!WARNING]
-> このプロジェクトはα版です。機能や仕様が予告なく変更される可能性があります。本番環境での使用は推奨しません。
 
 GitHubで管理している職務経歴書を[LAPRASのCareerページ](https://lapras.com/cv)に自動同期するGitHub Actionです。
 
@@ -17,6 +14,10 @@ GitHubで管理している職務経歴書を[LAPRASのCareerページ](https://
 - 職務要約
 -  (近日対応予定) 活かせる経験スキル
 -  (近日対応予定) Tech Skill
+
+
+> [!WARNING]
+> LLMを使ってGitHub上の職務経歴書の内容からLAPRASのCareerページの内容に変換するため、生成結果に誤りが含まれる可能性があります。実行後は https://lapras.com/cv にアクセスして変更内容を確認してください。
 
 
 ## Usage
