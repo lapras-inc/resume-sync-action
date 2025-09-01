@@ -45,7 +45,7 @@ export const experienceParseAgent = new Agent({
  * 職務経歴書から職歴を抽出する
  */
 export async function parseExperiences(resumeContent: string) {
-  const result = await experienceParseAgent.generate(
+  const result = await experienceParseAgent.generateVNext(
     `以下の職務経歴書から職歴情報を抽出してください。
 
 # 職務経歴書

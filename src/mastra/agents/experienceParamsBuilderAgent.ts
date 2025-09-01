@@ -65,7 +65,7 @@ ${JSON.stringify(experienceList, null, 2)}`
 # 職歴情報
 ${JSON.stringify(experienceList, null, 2)}`;
 
-  const result = await experienceParamsBuilderAgent.generate(prompt, {
+  const result = await experienceParamsBuilderAgent.generateVNext(prompt, {
     output: ExperienceApiParamsListSchema,
     maxRetries: 3,
   });
