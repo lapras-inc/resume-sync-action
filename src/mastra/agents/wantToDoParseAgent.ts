@@ -30,7 +30,7 @@ export const wantToDoParseAgent = new Agent({
  * 職務経歴書から今後のキャリア目標を抽出する
  */
 export async function parseWantToDo(resumeContent: string) {
-  const result = await wantToDoParseAgent.generate(
+  const result = await wantToDoParseAgent.generateVNext(
     `以下の職務経歴書から今後のキャリア目標・希望を抽出してください。
 
 # 職務経歴書

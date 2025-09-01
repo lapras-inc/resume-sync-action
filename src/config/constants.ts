@@ -10,7 +10,7 @@ export const API_CONFIG = {
 
 // デフォルトLLMモデル設定
 export const DEFAULT_LLM_MODELS = {
-  OPENAI: "gpt-4.1-mini",
+  OPENAI: "gpt-5-mini",
   ANTHROPIC: "claude-sonnet-4-20250514",
   GOOGLE: "gemini-2.5-flash",
 } as const;

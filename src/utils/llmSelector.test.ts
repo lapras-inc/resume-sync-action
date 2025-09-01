@@ -15,7 +15,7 @@ describe("llmSelector", () => {
 
     // Assert
     expect(result).toBeDefined();
-    expect(result.modelId).toBe("gpt-4.1-mini");
+    expect(result.modelId).toBe("gpt-5-mini");
   });
 
   it("Anthropic APIキーが設定されている場合、Claudeモデルを返す", () => {
@@ -66,7 +66,7 @@ describe("llmSelector", () => {
 
     // Assert - デフォルトでOpenAIモデルを返す
     expect(result).toBeDefined();
-    expect(result.modelId).toBe("gpt-4.1-mini");
+    expect(result.modelId).toBe("gpt-5-mini");
   });
 
   it("カスタムモデル名が環境変数で指定されている場合、それを使用する", () => {

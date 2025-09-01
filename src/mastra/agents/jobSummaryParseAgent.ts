@@ -30,7 +30,7 @@ export const jobSummaryParseAgent = new Agent({
  * 職務経歴書から職務要約を抽出する
  */
 export async function parseJobSummary(resumeContent: string) {
-  const result = await jobSummaryParseAgent.generate(
+  const result = await jobSummaryParseAgent.generateVNext(
     `以下の職務経歴書から職務要約を作成してください。
 
 # 職務経歴書
