@@ -67,7 +67,9 @@ ${JSON.stringify(experienceList, null, 2)}`;
 
   const result = await experienceParamsBuilderAgent.generateVNext(prompt, {
     output: ExperienceApiParamsListSchema,
-    maxRetries: 3,
+    modelSettings: {
+      maxRetries: 3,
+    },
   });
 
   return result.object;

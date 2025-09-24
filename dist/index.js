@@ -173329,7 +173329,9 @@ ${JSON.stringify(experienceList, null, 2)}` : `\u4EE5\u4E0B\u306E\u8077\u6B74\u6
 ${JSON.stringify(experienceList, null, 2)}`;
   const result = await experienceParamsBuilderAgent.generateVNext(prompt, {
     output: ExperienceApiParamsListSchema,
-    maxRetries: 3
+    modelSettings: {
+      maxRetries: 3
+    }
   });
   return result.object;
 }
@@ -173378,7 +173380,9 @@ async function parseExperiences(resumeContent) {
 ${resumeContent}`,
     {
       output: ExperienceListSchema,
-      maxRetries: 3
+      modelSettings: {
+        maxRetries: 3
+      }
     }
   );
   return result.object;
@@ -173414,7 +173418,9 @@ async function parseJobSummary(resumeContent) {
 ${resumeContent}`,
     {
       output: JobSummarySchema,
-      maxRetries: 3
+      modelSettings: {
+        maxRetries: 3
+      }
     }
   );
   return result.object;
@@ -173450,7 +173456,9 @@ async function parseWantToDo(resumeContent) {
 ${resumeContent}`,
     {
       output: WantToDoSchema,
-      maxRetries: 3
+      modelSettings: {
+        maxRetries: 3
+      }
     }
   );
   return result.object;

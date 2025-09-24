@@ -37,7 +37,9 @@ export async function parseJobSummary(resumeContent: string) {
 ${resumeContent}`,
     {
       output: JobSummarySchema,
-      maxRetries: 3,
+      modelSettings: {
+        maxRetries: 3,
+      },
     },
   );
 

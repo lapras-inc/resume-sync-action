@@ -37,7 +37,9 @@ export async function parseWantToDo(resumeContent: string) {
 ${resumeContent}`,
     {
       output: WantToDoSchema,
-      maxRetries: 3,
+      modelSettings: {
+        maxRetries: 3,
+      },
     },
   );
 

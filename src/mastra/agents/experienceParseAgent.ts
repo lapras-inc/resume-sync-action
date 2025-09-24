@@ -52,7 +52,9 @@ export async function parseExperiences(resumeContent: string) {
 ${resumeContent}`,
     {
       output: ExperienceListSchema,
-      maxRetries: 3,
+      modelSettings: {
+        maxRetries: 3,
+      },
     },
   );
 
